@@ -10,6 +10,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\components\SetupDateHelpers;
+use kartik\grid\EditableColumnAction;
+use yii\helpers\ArrayHelper;
 
 /**
  * ProduksiController implements the CRUD actions for Produksi model.
@@ -44,6 +46,30 @@ class ProduksiController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actions()
+    {
+      return ArrayHelper::merge(parent::actions(), [
+        'update' => [
+          'class' => EditableColumnAction::className(),
+          'modelClass' => Produksi::className(),
+          'outputValue' => function($model, $attribute, $key, $index) {
+            $value = $model->$attribute;
+            return '';
+          },
+          'outputMessage' => function($model, $attribute, $key, $index) {
+            return '';
+          }
+        ]
+      ]);
+
+      // return ArrayHelper::merge(parent::actions(), [
+      //     'update' => [
+      //         'class' => EditableColumnAction::className(),
+      //         'modelClass' => Produksi::className(),
+      //     ]
+      // ]);
     }
 
     /**

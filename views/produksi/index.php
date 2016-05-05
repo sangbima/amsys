@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use kartik\date\DatePicker;
 use kartik\editable\Editable;
 
@@ -74,7 +74,14 @@ $this->params['breadcrumbs'][] = $this->title;
               'content' => function($data){
                 return $data->status_style($data->status);
               },
-              'inputType'=>Editable::INPUT_SELECT2,
+              'editableOptions' => [
+                'header'=>'Status',
+                'inputType'=>Editable::INPUT_SELECT2,
+                'formOptions' => ['action' => ['/produksi/update']],
+                'options' => [
+                  'data'=>app\models\Produksi::get_status(),
+                ]
+              ],
             ],
             // 'user_id',
             // 'created',
