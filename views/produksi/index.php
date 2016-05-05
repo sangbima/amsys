@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use kartik\date\DatePicker;
+use kartik\editable\Editable;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProduksiSearch */
@@ -65,13 +66,15 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'bobot_panen_kotor',
             'harga_panen',
             [
+              'class'=>'kartik\grid\EditableColumn',
               'attribute' => 'status',
               'headerOptions' => ['width' => '80'],
               'label' => 'Status',
               'filter' => app\models\Produksi::get_status(),
               'content' => function($data){
                 return $data->status_style($data->status);
-              }
+              },
+              'inputType'=>Editable::INPUT_SELECT2,
             ],
             // 'user_id',
             // 'created',
