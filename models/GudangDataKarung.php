@@ -4,6 +4,11 @@ namespace app\models;
 
 use Yii;
 
+use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
+
 /**
  * This is the model class for table "gudang_data_karung".
  *
@@ -25,6 +30,33 @@ class GudangDataKarung extends \yii\db\ActiveRecord
         return 'gudang_data_karung';
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        /*return [
+            TimestampBehavior::className(),
+        ];*/
+
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'updated'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated',
+                ],
+                'value' => function(){ return date('Y-m-d H:i:s'); /* MySql DATETIME */},
+            ],
+            'autouserid' => [
+                'class' => BlameableBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['user_id'],
+                ],
+            ],
+        ];
+    }
+    
     /**
      * @inheritdoc
      */
