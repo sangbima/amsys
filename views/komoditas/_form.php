@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="komoditas-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => $model->formName()]); ?>
 
     <?php /*echo $form->field($model, 'kode')->textInput(['maxlength' => true]) */ ?>
 
@@ -29,3 +29,28 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php
+$script = <<< JS
+$('form#{$model->formName()}').on('beforeSubmit', function(e){
+  var \$form = $(this);
+    $.post(
+      \$form.attr("action"),  // serialize Yii2 form
+      \$form.serialize()
+    )
+      .done(function(result){
+        console.log(result);
+        if(result == 1){
+          $(\$form).trigger("reset");
+          $.pjax.reload({container:'#varietasGrid'});
+        } else {
+          $(\$form).trigger("reset");
+          $("#message").html(result.message);
+        }
+      }).fail(function(){
+        console.log("server error");
+      });
+    return false;
+});
+JS;
+$this->registerJs($script);
+?>

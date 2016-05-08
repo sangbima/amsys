@@ -9,6 +9,9 @@ use app\models\KomoditasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\grid\EditableColumnAction;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * KomoditasController implements the CRUD actions for Komoditas model.
@@ -45,6 +48,16 @@ class KomoditasController extends Controller
       ];
   }
 
+  public function actions()
+  {
+    return ArrayHelper::merge(parent::actions(), [
+        'updateInline' => [
+            'class' => EditableColumnAction::className(),
+            'modelClass' => Komoditas::className(),
+        ]
+    ]);
+  }
+
     /**
      * Lists all Komoditas models.
      * @return mixed
@@ -67,7 +80,7 @@ class KomoditasController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -79,7 +92,7 @@ class KomoditasController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Komoditas();
+        // $model = new Komoditas();
 
         /* Ini untuk multi komoditas dan multi varietas
 
@@ -103,15 +116,35 @@ class KomoditasController extends Controller
         }
         */
 
+        // if ($model->load(Yii::$app->request->post())) {
+        //   $model->parent = 1; // Komoditas Bawang
+        //   $model->level = 'Variatas';
+        //   $model->kode = $this->buatkode();
+        //   if($model->save()){
+        //     return $this->redirect(['view', 'id' => $model->kode]);
+        //   }
+        // } else {
+        //     return $this->renderAjax('create', [
+        //         'model' => $model,
+        //     ]);
+        // }
+
+        // $model = new AcuanHarga();
+        $model = new Komoditas();
+
         if ($model->load(Yii::$app->request->post())) {
           $model->parent = 1; // Komoditas Bawang
           $model->level = 'Variatas';
           $model->kode = $this->buatkode();
-          if($model->save(false)){
-            return $this->redirect(['view', 'id' => $model->kode]);
+
+          if($model->save(false)) {
+            echo 1;
+          } else {
+            echo 0;
           }
+            // return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $model,
             ]);
         }
@@ -150,12 +183,23 @@ class KomoditasController extends Controller
         }
         */
 
-        if ($model->load(Yii::$app->request->post())) {
-          if($model->save(false)){
-            return $this->redirect(['view', 'id' => $model->kode]);
-          }
+        // if ($model->load(Yii::$app->request->post())) {
+        //   if($model->save(false)){
+        //     return $this->redirect(['view', 'id' => $model->kode]);
+        //   }
+        // } else {
+        //     return $this->render('update', [
+        //         'model' => $model,
+        //     ]);
+        // }
+
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            // return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['komoditas/index']);
         } else {
-            return $this->render('update', [
+            return $this->renderAjax('update', [
                 'model' => $model,
             ]);
         }

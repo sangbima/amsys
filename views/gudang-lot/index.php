@@ -1,13 +1,13 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\GudangLotSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Gudang Lots';
+$this->title = 'Gudang Lot';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gudang-lot-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Gudang Lot', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="fa fa-plus"></i> Gudang Lot', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,11 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'gudang_bangunan_id',
+            [
+              'attribute'=>'gudang_bangunan_id',
+              'label'=>'Gudang Bangunan',
+              'value'=>'gudangBangunan.kode'
+            ],
             'kode',
             'kapasitas_m3',
-            'user_id',
+            // 'user_id',
             // 'created',
             // 'updated',
 

@@ -85,7 +85,7 @@ class Produksi extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lahan_id', 'komoditas_kode', 'tgl_tanam', 'tgl_panen', 'est_bobot_panen', 'harga_panen', 'user_id'], 'required'],
+            [['lahan_id', 'komoditas_kode', 'tgl_tanam', 'tgl_panen', 'est_bobot_panen', 'harga_panen'], 'required'],
             [['lahan_id', 'user_id'], 'integer'],
             [['status', 'keterangan'], 'string'],
             [['tgl_tanam', 'tgl_panen', 'created', 'updated'], 'safe'],

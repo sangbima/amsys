@@ -4,14 +4,14 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
-
 
 /**
  * This is the model class for table "armada".
  *
- * @property string $id
+ * @property integer $id
  * @property string $kode
  * @property string $no_polisi
  * @property string $kapasitas_mesin
@@ -19,6 +19,9 @@ use yii\behaviors\BlameableBehavior;
  * @property string $created
  * @property string $updated
  * @property integer $user_id
+ *
+ * @property AngkutGudang[] $angkutGudangs
+ * @property AngkutLapak[] $angkutLapaks
  */
 class Armada extends \yii\db\ActiveRecord
 {
@@ -56,19 +59,18 @@ class Armada extends \yii\db\ActiveRecord
             ],
         ];
     }
-
+    
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'no_polisi'], 'required'],
-            [['id', 'user_id'], 'integer'],
+            [['no_polisi'], 'required'],
             [['kapasitas_mesin', 'kapasitas_angkut'], 'number'],
             [['created', 'updated'], 'safe'],
+            [['user_id'], 'integer'],
             [['kode', 'no_polisi'], 'string', 'max' => 45],
-            [['id'], 'unique'],
             [['no_polisi'], 'unique'],
             [['kode'], 'unique'],
         ];
@@ -87,7 +89,23 @@ class Armada extends \yii\db\ActiveRecord
             'kapasitas_angkut' => 'Kapasitas Angkut',
             'created' => 'Created',
             'updated' => 'Updated',
-            'user_id' => 'Userid',
+            'user_id' => 'User ID',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAngkutGudangs()
+    {
+        return $this->hasMany(AngkutGudang::className(), ['armada_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAngkutLapaks()
+    {
+        return $this->hasMany(AngkutLapak::className(), ['armada_id' => 'id']);
     }
 }

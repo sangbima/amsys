@@ -68,9 +68,8 @@ class Komoditas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kode', 'nama'], 'required'],
+            [['nama'], 'required'],
             [['created', 'updated'], 'safe'],
-            [['user_id'], 'integer'],
             [['level', 'keterangan'], 'string'],
             [['kode', 'parent'], 'string', 'max' => 50],
             [['nama'], 'string', 'max' => 100],

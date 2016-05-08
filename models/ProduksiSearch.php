@@ -66,6 +66,18 @@ class ProduksiSearch extends Produksi
 
         $query->joinWith(['komoditasKode', 'lahan.petani']);
 
+        $dataProvider->setSort([
+            'attributes' => [
+                'created' => [
+                    'asc' => ['created' => SORT_ASC],
+                    'desc' => ['created' => SORT_DESC]
+                ],
+            ],
+            'defaultOrder' => [
+                'created'=>SORT_DESC,
+            ]
+        ]);
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

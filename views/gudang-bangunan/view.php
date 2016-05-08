@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\GudangBangunan */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Gudang Bangunans', 'url' => ['index']];
+$this->title = $model->kode;
+$this->params['breadcrumbs'][] = ['label' => 'Gudang Bangunan', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gudang-bangunan-view">
@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('<i class="fa fa-edit"></i> Ubah', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="fa fa-trash"></i> Hapus', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -28,15 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'gudang_id',
+            'gudang.nama',
             'kode',
             'kapasitas_m3',
             'latitude',
             'longitude',
-            'user_id',
-            'created',
-            'updated',
+            // 'user_id',
+            // 'created',
+            // 'updated',
         ],
     ]) ?>
 

@@ -16,8 +16,8 @@ use app\models\Komoditas;
 
 <div class="produksi-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-    
+    <?php $form = ActiveForm::begin(['id' => $model->formName()]); ?>
+
     <div class="form-group bgform">
       <div class="row">
         <div class="col-md-6">
@@ -60,7 +60,7 @@ use app\models\Komoditas;
         </div>
 
         <div class="col-md-6">
-    
+
           <?= $form->field($model, 'tgl_panen')->widget(DatePicker::classname(),[
             'options' => ['placeholder' => 'Pilih tanggal panen...'],
             'type' => DatePicker::TYPE_COMPONENT_APPEND,
@@ -69,7 +69,7 @@ use app\models\Komoditas;
               'format' => 'dd MM yyyy'
             ]
           ]); ?>
-          
+
 
         </div>
       </div>
@@ -106,14 +106,39 @@ use app\models\Komoditas;
     </div>
     <?= $form->field($model, 'keterangan')->textarea(['rows' => 6]) ?>
 
-    
+
     <?php //echo $form->field($model, 'bobot_panen_kotor')->textInput(['maxlength' => true]) ?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-plus"></i> Tambah' : '<i class="fa fa-edit"></i> Ubah', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
     </div>
-    
+
 
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php
+$script = <<< JS
+$('form#{$model->formName()}').on('beforeSubmit', function(e){
+  var \$form = $(this);
+    $.post(
+      \$form.attr("action"),  // serialize Yii2 form
+      \$form.serialize()
+    )
+      .done(function(result){
+        console.log(result);
+        if(result == 1){
+          $(\$form).trigger("reset");
+          $.pjax.reload({container:'#produksiGrid'});
+        } else {
+          $(\$form).trigger("reset");
+          $("#message").html(result.message);
+        }
+      }).fail(function(){
+        console.log("server error");
+      });
+    return false;
+});
+JS;
+$this->registerJs($script);
+?>

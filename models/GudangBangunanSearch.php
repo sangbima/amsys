@@ -18,8 +18,8 @@ class GudangBangunanSearch extends GudangBangunan
     public function rules()
     {
         return [
-            [['id', 'gudang_id', 'user_id'], 'integer'],
-            [['kode', 'created', 'updated'], 'safe'],
+            [['id', 'user_id'], 'integer'],
+            [['kode', 'gudang_id', 'created', 'updated'], 'safe'],
             [['kapasitas_m3', 'latitude', 'longitude'], 'number'],
         ];
     }
@@ -58,19 +58,23 @@ class GudangBangunanSearch extends GudangBangunan
             return $dataProvider;
         }
 
+        $query->joinWith('gudang');
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'gudang_id' => $this->gudang_id,
-            'kapasitas_m3' => $this->kapasitas_m3,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
+            // 'kapasitas_m3' => $this->kapasitas_m3,
+            // 'latitude' => $this->latitude,
+            // 'longitude' => $this->longitude,
             'user_id' => $this->user_id,
             'created' => $this->created,
             'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'kode', $this->kode]);
+        $query->andFilterWhere(['like', 'gudang_bangunan.kapasitas_m3', $this->kapasitas_m3])
+              ->andFilterWhere(['like', 'gudang_bangunan.latitude', $this->latitude])
+              ->andFilterWhere(['like', 'gudang_bangunan.longitude', $this->longitude])
+              ->andFilterWhere(['like', 'gudang_bangunan.kode', $this->kode])
+              ->andFilterWhere(['like', 'gudang.nama', $this->gudang_id]);
 
         return $dataProvider;
     }

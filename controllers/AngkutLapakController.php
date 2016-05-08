@@ -65,8 +65,11 @@ class AngkutLapakController extends Controller
     {
         $model = new AngkutLapak();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+          $model->no_surat = $this->generateNoSuratAngkutLapak();
+          if($model->save()){
             return $this->redirect(['view', 'id' => $model->id]);
+          }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -104,6 +107,36 @@ class AngkutLapakController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function generateNoSuratAngkutLapak()
+    {
+
+      $helper_nomor = \app\models\HelperNomor::findOne(['parameter' => 'last_angkut_lapak']);
+      $prev_no = $helper_nomor->value;
+      $bln = date('m');
+      $thn = date('y');
+      $next_no = 0;
+
+      $lastDayOfTheMonth=new \DateTime('last day of this month');
+      // echo $lastDayOfTheMonth->format('d');
+
+      $firstDayOfTheMonth = new \DateTime('first day of this month');
+      // echo $firstDayOfTheMonth->format('d');
+      // $firstDayOfTheMonth = 2;
+      // // echo date('d');
+      // $prev_no = 10;
+      if(date('j') == $firstDayOfTheMonth) {
+        $next_no = 1;
+      } else {
+        $next_no = $prev_no+1;
+      }
+      $helper_nomor->value = $next_no;
+      if($helper_nomor->save()) {
+          return $next_no . "/LAPAK/".$bln."/".$thn;
+      } else {
+        return false;
+      }
     }
 
     /**

@@ -17,7 +17,7 @@ use yii\web\JsExpression;
 <div class="lokasi-form">
     <div class="form-group bgform">
       <div class="row">
-        <div class="col-md-6">    
+        <div class="col-md-6">
             <?php $form = ActiveForm::begin(); ?>
             <?= $form->field($model, 'level')->widget(Select2::classname(), [
                 'data' => ['Provinsi' => 'Provinsi',
@@ -127,7 +127,7 @@ use yii\web\JsExpression;
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">  
+        <div class="col-md-4">
                 <?= $form->field($model, 'kode')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-8">

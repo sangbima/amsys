@@ -75,13 +75,14 @@ class AcuanHargaSearch extends AcuanHarga
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'harga' => $this->harga,
+            // 'harga' => $this->harga,
             'user_id' => $this->user_id,
             'created' => $this->created,
             'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'komoditas.nama', $this->komoditas_kode]);
+        $query->andFilterWhere(['like', 'komoditas.nama', $this->komoditas_kode])
+              ->andFilterWhere(['like', 'harga', $this->harga]);
 
         return $dataProvider;
     }

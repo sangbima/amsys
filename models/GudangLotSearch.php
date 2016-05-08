@@ -18,8 +18,8 @@ class GudangLotSearch extends GudangLot
     public function rules()
     {
         return [
-            [['id', 'gudang_bangunan_id', 'user_id'], 'integer'],
-            [['kode', 'created', 'updated'], 'safe'],
+            [['id', 'user_id'], 'integer'],
+            [['kode', 'gudang_bangunan_id', 'created', 'updated'], 'safe'],
             [['kapasitas_m3'], 'number'],
         ];
     }
@@ -58,17 +58,19 @@ class GudangLotSearch extends GudangLot
             return $dataProvider;
         }
 
+        $query->joinWith('gudangBangunan');
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'gudang_bangunan_id' => $this->gudang_bangunan_id,
-            'kapasitas_m3' => $this->kapasitas_m3,
+            'gudang_lot.kapasitas_m3' => $this->kapasitas_m3,
             'user_id' => $this->user_id,
             'created' => $this->created,
             'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'kode', $this->kode]);
+        $query->andFilterWhere(['like', 'gudang_lot.kode', $this->kode])
+              ->andFilterWhere(['like', 'gudang_bangunan.kode', $this->gudang_bangunan_id]);
 
         return $dataProvider;
     }

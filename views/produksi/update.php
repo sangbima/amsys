@@ -10,10 +10,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Produksi', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->petani->nama, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Ubah';
 ?>
-<div class="row">
-    <div class="box-body">
-		<div class="row">
-			<div class="col-md-6">
+<div class="produksi-update">
 
 			    <h4><?= Html::encode($this->title) ?></h4>
 
@@ -21,7 +18,4 @@ $this->params['breadcrumbs'][] = 'Ubah';
 			        'model' => $model,
 			    ]) ?>
 
-</div>
-</div>
-</div>
 </div>

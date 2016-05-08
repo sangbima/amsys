@@ -20,13 +20,13 @@ use yii\widgets\ActiveForm;
       'clientOptions' => [
         'alias' => 'decimal',
       ]
-    ]) ?>
+      ]) ?>
 
-    <?= $form->field($model, 'kapasitas_angkut')->widget(\yii\widgets\MaskedInput::className(),[
+    <?= $form->field($model, 'kapasitas_mesin')->widget(\yii\widgets\MaskedInput::className(),[
       'clientOptions' => [
         'alias' => 'decimal',
       ]
-    ]) ?>
+      ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-plus"></i> Tambah' : '<i class="fa fa-edit"></i> Ubah', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

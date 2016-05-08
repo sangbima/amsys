@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use kartik\grid\EditableColumnAction;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * SopirController implements the CRUD actions for Sopir model.
@@ -44,6 +47,15 @@ class SopirController extends Controller
         ];
     }
 
+    public function actions()
+    {
+      return ArrayHelper::merge(parent::actions(), [
+          'updateInline' => [
+              'class' => EditableColumnAction::className(),
+              'modelClass' => Sopir::className(),
+          ]
+      ]);
+    }
     /**
      * Lists all Sopir models.
      * @return mixed
@@ -66,7 +78,7 @@ class SopirController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -78,12 +90,27 @@ class SopirController extends Controller
      */
     public function actionCreate()
     {
+        // $model = new Sopir();
+        //
+        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        //     return $this->redirect(['view', 'id' => $model->id]);
+        // } else {
+        //     return $this->render('create', [
+        //         'model' => $model,
+        //     ]);
+        // }
+
         $model = new Sopir();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+          if($model->save()) {
+            echo 1;
+          } else {
+            echo 0;
+          }
+            // return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $model,
             ]);
         }
@@ -97,12 +124,24 @@ class SopirController extends Controller
      */
     public function actionUpdate($id)
     {
+        // $model = $this->findModel($id);
+        //
+        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        //     return $this->redirect(['view', 'id' => $model->id]);
+        // } else {
+        //     return $this->render('update', [
+        //         'model' => $model,
+        //     ]);
+        // }
+
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->save()) {
+              return $this->redirect(['sopir/index']);
+            }
         } else {
-            return $this->render('update', [
+            return $this->renderAjax('update', [
                 'model' => $model,
             ]);
         }
@@ -135,5 +174,26 @@ class SopirController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionSopirList($q = null, $id = null)
+    {
+      // $q='Ace';
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      $out = ['results' => ['id' => '', 'text' => '']];
+      if (!is_null($q)) {
+          $query = new \yii\db\Query;
+          $query->select('id AS id, nama AS text')
+              ->from('sopir')
+              ->where(['like', 'nama', $q])
+              ->limit(20);
+          $command = $query->createCommand();
+          $data = $command->queryAll();
+          $out['results'] = array_values($data);
+      }
+      elseif ($id > 0) {
+          $out['results'] = ['id' => $id, 'text' => Sopir::find($id)->name];
+      }
+      return $out;
     }
 }

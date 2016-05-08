@@ -61,14 +61,16 @@ class ArmadaSearch extends Armada
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'kapasitas_mesin' => $this->kapasitas_mesin,
-            'kapasitas_angkut' => $this->kapasitas_angkut,
+            // 'kapasitas_mesin' => $this->kapasitas_mesin,
+            // 'kapasitas_angkut' => $this->kapasitas_angkut,
             'created' => $this->created,
             'updated' => $this->updated,
             'user_id' => $this->user_id,
         ]);
 
         $query->andFilterWhere(['like', 'kode', $this->kode])
+            ->andFilterWhere(['like', 'kapasitas_mesin', $this->kapasitas_mesin])
+            ->andFilterWhere(['like', 'kapasitas_angkut', $this->kapasitas_angkut])
             ->andFilterWhere(['like', 'no_polisi', $this->no_polisi]);
 
         return $dataProvider;

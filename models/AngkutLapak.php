@@ -69,14 +69,14 @@ class AngkutLapak extends \yii\db\ActiveRecord
             ],
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['no_surat', 'no_proposal', 'armada_id', 'sopir_id', 'produksi_id', 'lapak_id', 'waktu_rencana'], 'required'],
+            [['no_proposal', 'armada_id', 'sopir_id', 'produksi_id', 'lapak_id', 'waktu_rencana'], 'required'],
             [['armada_id', 'sopir_id', 'produksi_id', 'lapak_id', 'diterima_oleh', 'user_id'], 'integer'],
             [['waktu_rencana', 'waktu_realisasi', 'diterima_pada', 'created', 'updated'], 'safe'],
             [['status'], 'string'],

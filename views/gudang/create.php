@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Gudang */
 
-$this->title = 'Create Gudang';
-$this->params['breadcrumbs'][] = ['label' => 'Gudangs', 'url' => ['index']];
+$this->title = 'Tambah Gudang';
+$this->params['breadcrumbs'][] = ['label' => 'Gudang', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gudang-create">

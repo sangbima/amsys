@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\AngkutLapak */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Angkut Lapaks', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Angkut Lapak', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="angkut-lapak-view">
@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('<i class="fa fa-edit></i> Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="fa fa-trash></i> Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -28,21 +28,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'no_surat',
             'no_proposal',
             'armada_id',
             'sopir_id',
-            'produksi_id',
-            'lapak_id',
+            // 'produksi_id',
+            // 'lapak_id',
             'waktu_rencana',
             'waktu_realisasi',
             'status',
             'diterima_oleh',
             'diterima_pada',
-            'user_id',
-            'created',
-            'updated',
+            // 'user_id',
+            // 'created',
+            // 'updated',
         ],
     ]) ?>
 

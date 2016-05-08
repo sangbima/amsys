@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\InfoHargaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Info Hargas';
+$this->title = 'Info Harga';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="info-harga-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Info Harga', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="fa fa-plus"></i> Info Harga', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,8 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'komoditas_kode',
+            [
+              'attribute'=>'komoditas_kode',
+              'label'=>'Komoditas',
+              'value'=>'komoditasKode.nama'
+            ],
             'tanggal',
             'harga_kg',
             'pasar',

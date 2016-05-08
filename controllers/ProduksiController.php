@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use app\components\SetupDateHelpers;
 use kartik\grid\EditableColumnAction;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * ProduksiController implements the CRUD actions for Produksi model.
@@ -51,7 +52,7 @@ class ProduksiController extends Controller
     public function actions()
     {
       return ArrayHelper::merge(parent::actions(), [
-        'update' => [
+        'updateInline' => [
           'class' => EditableColumnAction::className(),
           'modelClass' => Produksi::className(),
           'outputValue' => function($model, $attribute, $key, $index) {
@@ -94,7 +95,7 @@ class ProduksiController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -110,17 +111,19 @@ class ProduksiController extends Controller
         $model->no_proposal = $this->generateProposalNo();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->tgl_tanam = date('Y-m-d', strtotime($model->tgl_tanam));
-            $model->tgl_panen = date('Y-m-d', strtotime($model->tgl_panen));
-            if($model->save(false)){
-              return $this->redirect(['view', 'id' => $model->id]);
-            }
+          $model->tgl_tanam = date('Y-m-d', strtotime($model->tgl_tanam));
+          $model->tgl_panen = date('Y-m-d', strtotime($model->tgl_panen));
+          if($model->save()) {
+            echo 1;
+          } else {
+            echo 0;
+          }
+            // return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $model,
             ]);
         }
-
     }
 
     /**
@@ -134,15 +137,16 @@ class ProduksiController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
+            // return $this->redirect(['view', 'id' => $model->id]);
             $model->tgl_tanam = date('Y-m-d', strtotime($model->tgl_tanam));
             $model->tgl_panen = date('Y-m-d', strtotime($model->tgl_panen));
-            if($model->save()){
-              return $this->redirect(['view', 'id' => $model->id]);
+            if($model->save()) {
+              return $this->redirect(['produksi/index']);
             }
         } else {
             $model->tgl_tanam = date('d F Y', strtotime($model->tgl_tanam));
             $model->tgl_panen = date('d F Y', strtotime($model->tgl_panen));
-            return $this->render('update', [
+            return $this->renderAjax('update', [
                 'model' => $model,
             ]);
         }
@@ -175,6 +179,28 @@ class ProduksiController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionProduksiList($q = null, $id = null)
+    {
+      // $q='Ace';
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      $out = ['results' => ['id' => '', 'text' => '']];
+      if (!is_null($q)) {
+          $query = new \yii\db\Query;
+          $query->select('id AS id, no_proposal AS text')
+              ->from('produksi')
+              ->where(['like', 'no_proposal', $q])
+              ->andWhere(['status' => 'selesai'])
+              ->limit(20);
+          $command = $query->createCommand();
+          $data = $command->queryAll();
+          $out['results'] = array_values($data);
+      }
+      elseif ($id > 0) {
+          $out['results'] = ['id' => $id, 'text' => Produksi::find($id)->no_proposal];
+      }
+      return $out;
     }
 
     public function generateProposalNo()

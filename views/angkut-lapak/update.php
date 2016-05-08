@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\AngkutLapak */
 
-$this->title = 'Update Angkut Lapak: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Angkut Lapaks', 'url' => ['index']];
+$this->title = 'Ubah Angkut Lapak: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Angkut Lapak', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Ubah';
 ?>
 <div class="angkut-lapak-update">
 

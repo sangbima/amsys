@@ -1,42 +1,57 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\widgets\Pjax;
+use yii\bootstrap\Modal;
+use yii\helpers\Url;
+use kartik\grid\GridView;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ArmadaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Armada';
+$this->title = 'Armadas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="row">
-    <div class="box-body">
+<div class="armada-index">
 
-        <h3><?= Html::encode($this->title) ?></h3>
-        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-        <p>
-            <?= Html::a('<i class="fa fa-plus"></i> Armada', ['create'], ['class' => 'btn btn-success']) ?>
-        </p>
-        <?php Pjax::begin(); ?>    <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
+    <p>
+        <?php echo Html::a('<i class="fa fa-plus"></i> Armada', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php //Html::button('<i class="fa fa-plus"></i> Acuan Harga', ['value' => Url::to(['armada/create'], true),'class' => 'btn btn-success', 'id' => 'modalButton']) ?>
+    </p>
+    <?php
+      Modal::begin([
+        'header' => '<h4><i class="fa fa-plus"></i> Armada</h4>',
+        'id' => 'modalCreate',
+        'size' => 'modal-md'
+      ]);
 
-                    // 'id',
-                    'kode',
-                    'no_polisi',
-                    'kapasitas_mesin',
-                    'kapasitas_angkut',
-                    // 'created',
-                    // 'updated',
-                    // 'userid',
+      echo '<div id="modalContent"></div>';
+      Modal::end();
+    ?>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'pjax' => true,
+        'pjaxSettings' => [
+          'options' => [
+            'id' => 'armadaGrid',
+          ]
+        ],
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
 
-                    ['class' => 'yii\grid\ActionColumn'],
-                ],
-            ]); ?>
-        <?php Pjax::end(); ?>
-</div>
+            'no_polisi',
+            'kode',
+            'kapasitas_mesin',
+            'kapasitas_angkut',
+            // 'created',
+            // 'updated',
+            // 'user_id',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
 </div>

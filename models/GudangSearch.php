@@ -57,20 +57,22 @@ class GudangSearch extends Gudang
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        $query->joinWith('lokasiKode');
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
+            // 'gudang.latitude' => $this->latitude,
+            // 'gudang.longitude' => $this->longitude,
             'user_id' => $this->user_id,
             'created' => $this->created,
             'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'nama', $this->nama])
+        $query->andFilterWhere(['like', 'gudang.nama', $this->nama])
+            ->andFilterWhere(['like', 'gudang.latitude', $this->latitude])
+            ->andFilterWhere(['like', 'gudang.longitude',$this->longitude])
             ->andFilterWhere(['like', 'alamat', $this->alamat])
-            ->andFilterWhere(['like', 'lokasi_kode', $this->lokasi_kode]);
+            ->andFilterWhere(['like', 'lokasi.nama', $this->lokasi_kode]);
 
         return $dataProvider;
     }

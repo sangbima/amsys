@@ -121,4 +121,25 @@ class GudangController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionGudangList($q = null, $id = null)
+    {
+      // $q='Ace';
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      $out = ['results' => ['id' => '', 'text' => '']];
+      if (!is_null($q)) {
+          $query = new \yii\db\Query;
+          $query->select('id AS id, nama AS text')
+              ->from('gudang')
+              ->where(['like', 'nama', $q])
+              ->limit(20);
+          $command = $query->createCommand();
+          $data = $command->queryAll();
+          $out['results'] = array_values($data);
+      }
+      elseif ($id > 0) {
+          $out['results'] = ['id' => $id, 'text' => Gudang::find($id)->nama];
+      }
+      return $out;
+    }
 }
