@@ -43,7 +43,7 @@ class LahanSearch extends Lahan
     public function search($params)
     {
         // $query = Lahan::find();
-        if(Yii::$app->user->id == 1) {
+        if(Yii::$app->user->can('Administrator')) {
           $query = Lahan::find();
         } else {
           $query = Lahan::find()->where(['lahan.user_id' => Yii::$app->user->id]);
@@ -69,7 +69,7 @@ class LahanSearch extends Lahan
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'luas_m2' => $this->luas_m2,
+            // 'luas_m2' => $this->luas_m2,
             'lahan.status' => $this->status,
             'created' => $this->created,
             'updated' => $this->updated,
@@ -77,6 +77,7 @@ class LahanSearch extends Lahan
 
         $query->andFilterWhere(['like', 'keterangan', $this->keterangan])
             ->andFilterWhere(['like', 'user_id', $this->user_id])
+            ->andFilterWhere(['like', 'luas_m2', $this->luas_m2])
             ->andFilterWhere(['like', 'petani.nama', $this->petani_id])
             ->andFilterWhere(['like', 'lokasi.nama', $this->lokasi_kode]);
 

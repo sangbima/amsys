@@ -6,6 +6,7 @@ use kartik\date\DatePicker;
 use kartik\editable\Editable;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
+use hscstudio\mimin\components\Mimin;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProduksiSearch */
@@ -22,7 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php //Html::a('<i class="fa fa-plus"></i> Produksi', ['create'], ['class' => 'btn btn-success']) ?>
-        <?=Html::button('<i class="fa fa-plus"></i> Produksi', ['value' => Url::to(['produksi/create'], true),'class' => 'btn btn-success', 'id' => 'modalButton']) ?>
+        <?php
+        if ((Mimin::checkRoute($this->context->id.'/create'))){
+          echo Html::button('<i class="fa fa-plus"></i> Produksi', ['value' => Url::to(['produksi/create'], true),'class' => 'btn btn-success', 'id' => 'modalButton']);
+        }
+        ?>
     </p>
     <?php
       Modal::begin([
@@ -114,7 +119,9 @@ $this->params['breadcrumbs'][] = $this->title;
               'class' => 'yii\grid\ActionColumn',
               'headerOptions' => ['width' => '80'],
               'contentOptions' => ['style' => 'width: 10%'],
-              'template' => '{view} {update} {delete}',
+              'template' => Mimin::filterActionColumn([
+                'view', 'update', 'delete'
+              ], $this->context->route),
               'buttons' => [
                 'view'=>function ($url, $model) {
                   return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>$url, 'class' => 'btn btn-default btn-xs btnViewModal']);

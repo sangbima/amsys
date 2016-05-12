@@ -25,9 +25,11 @@
         "kartik-v/yii2-widget-datepicker": "@dev",
         "kartik-v/yii2-editable": "*",
         "kartik-v/yii2-mpdf": "*",
+        "kartik-v/yii2-widgets": "*",
         "miloschuman/yii2-highcharts-widget": "*",
         "hscstudio/yii2-mimin": "~1.1",
-        "chillerlan/php-qrcode": "dev-master"
+        "chillerlan/php-qrcode": "dev-master",
+        "bupy7/yii2-widget-cropbox": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -43,7 +43,7 @@ class PetaniSearch extends Petani
     public function search($params)
     {
         // $query = Petani::find();
-        if(Yii::$app->user->id == 1) {
+        if(Yii::$app->user->can('Administrator')) {
           $query = Petani::find();
         } else {
           $query = Petani::find()->where(['petani.user_id' => Yii::$app->user->id]);
@@ -76,7 +76,7 @@ class PetaniSearch extends Petani
 
         $query->joinWith('lokasiKode');
 
-        $query->andFilterWhere(['like', 'nama', $this->nama])
+        $query->andFilterWhere(['like', 'petani.nama', $this->nama])
             ->andFilterWhere(['like', 'alamat', $this->alamat])
             ->andFilterWhere(['like', 'no_ktp', $this->no_ktp])
             ->andFilterWhere(['like', 'user_id', $this->user_id])

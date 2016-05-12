@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use hscstudio\mimin\components\Mimin;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\LapakSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -17,7 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('<i class="fa fa-plus"></i> Lapak', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if((Mimin::checkRoute($this->context->id.'/create'))) {
+          echo Html::a('<i class="fa fa-plus"></i> Lapak', ['create'], ['class' => 'btn btn-success']);
+        }
+        ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -33,8 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
               'label' => 'Lokasi',
               'value' => 'lokasiKode.nama'
             ],
-            
-            ['class' => 'yii\grid\ActionColumn'],
+
+            [
+              'class' => 'yii\grid\ActionColumn',
+              'template' => Mimin::filterActionColumn([
+                'view', 'update', 'delete'
+              ], $this->context->route)
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

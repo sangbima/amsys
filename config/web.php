@@ -44,10 +44,10 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        // 'authManager' => [
-        //     'class' => 'yii\rbac\DbManager',
-        //     'defaultRoles' => ['guest'],
-        // ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'defaultRoles' => ['guest'],
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -88,14 +88,14 @@ $config = [
             ]
         ],
     ],
-    // 'as access' => [
-    //   'class' => '\hscstudio\mimin\components\AccessControl',
-    //   'allowActions' => [
-    //     'site/*',
-    //     'debug/*',
-    //     'mimin/*'   // only in dev mode
-    //   ],
-    // ],
+    'as access' => [
+      'class' => '\hscstudio\mimin\components\AccessControl',
+      'allowActions' => [
+        'site/*',
+        'debug/*',
+        'mimin/*'   // only in dev mode
+      ],
+    ],
     'modules' => [
         'utility' => [
             'class' => 'c006\utility\migration\Module',
@@ -103,9 +103,9 @@ $config = [
         'gridview' => [
             'class' => '\kartik\grid\Module'
         ],
-        // 'mimin' => [
-        //   'class' => '\hscstudio\mimin\module',
-        // ]
+        'mimin' => [
+          'class' => '\hscstudio\mimin\module',
+        ]
     ],
     'params' => $params,
 ];

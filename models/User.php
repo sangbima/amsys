@@ -18,9 +18,10 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 10;
 
-    public $pass;
-    public $newPasswordConfirm;
-    public $status;
+    // public $pass;
+    // public $newPasswordConfirm;
+    // public $status;
+    public $new_password, $old_password, $repeat_password;
 
     public static function tableName()
     {
@@ -58,10 +59,28 @@ class User extends ActiveRecord implements IdentityInterface
     {
       return [
         ['status', 'default', 'value' => self::STATUS_ACTIVE],
-        ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE]],
-        [['username', 'nama', 'pass', 'status'], 'required'],
-        [['pass', 'newPasswordConfirm'], 'string', 'min' => 6, 'max' => 100],
+        [['username', 'email', 'password_hash'], 'string', 'max' => 255],
+        [['username', 'nama', 'status'], 'required'],
+        [['username', 'email'], 'unique'],
+        [['email'], 'email'],
+        [['old_password', 'new_password', 'repeat_password'], 'string', 'min' => 6],
+        [['repeat_password'], 'compare', 'compareAttribute' => 'new_password'],
+        [['old_password', 'new_password', 'repeat_password'], 'required', 'when' => function($model){
+          return (!empty($model->new_password));
+        }, 'whenClient' => "function (attribute, value) {
+          return ($('#user-new_password').val().length>0);
+        }"],
+        ['username', 'filter', 'filter' => 'trim'],
+        ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This username has already been taken.'],
+        // [['pass', 'newPasswordConfirm'], 'string', 'min' => 6, 'max' => 100],
       ];
+    }
+
+    public function scenarios()
+    {
+      $scenarios = parent::scenarios();
+      $scenarios['password'] = ['old_password', 'new_password', 'repeat_password'];
+      return $scenarios;
     }
 
     /**
@@ -71,11 +90,24 @@ class User extends ActiveRecord implements IdentityInterface
      {
        return [
         'username' => 'Username',
-        'pass' => 'Password',
+        // 'pass' => 'Password',
+        'password_hash' => 'Password Hash',
+        'email' => 'Email',
         'status' => 'Status',
-        'newPasswordConfirm' => 'Ulangi Password',
+        // 'newPasswordConfirm' => 'Ulangi Password',
        ];
      }
+
+    public function beforeSave($insert)
+    {
+      if(parent::beforeSave($insert)) {
+        if($this->isNewRecord) {
+            $this->auth_key = \Yii::$app->security->generateRandomString();
+        }
+        return true;
+      }
+      return false;
+    }
 
     /**
      * @inheritdoc
@@ -173,7 +205,17 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getStatusLabel($status)
     {
-        if($status == self::STATUS_ACTIVE) return '<p class="text-center"><span class="label label-primary"><i class="glyphicon glyphicon-ok"></i></span></p>';
-        if($status == self::STATUS_INACTIVE) return '<p class="text-center"><span class="label label-warning"><i class="glyphicon glyphicon-ban-circle"></i></span></p>';
+        if($status == self::STATUS_ACTIVE) return '<span class="label label-primary">Active</span>';
+        if($status == self::STATUS_INACTIVE) return '<span class="label label-danger">Active</span>';
+    }
+
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getRoles()
+    {
+      return $this->hasMany(AuthAssignment::className(), [
+        'user_id' => 'id',
+      ]);
     }
 }

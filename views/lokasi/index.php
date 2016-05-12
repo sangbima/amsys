@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use hscstudio\mimin\components\Mimin;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\LokasiSearch */
@@ -17,7 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('<i class="fa fa-plus"></i> Lokasi', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php
+        if ((Mimin::checkRoute($this->context->id.'/create'))){
+          Html::a('<i class="fa fa-plus"></i> Lokasi', ['create'], ['class' => 'btn btn-success']);
+        }
+        ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -33,7 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'created',
             // 'updated',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+              'class' => 'yii\grid\ActionColumn',
+              'template' => Mimin::filterActionColumn([
+                'view', 'update', 'delete'
+              ], $this->context->route)
+            ],
         ],
     ]); ?>
 </div>

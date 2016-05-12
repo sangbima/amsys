@@ -69,8 +69,9 @@ class Pasar extends \yii\db\ActiveRecord
     {
         return [
             [['id'], 'integer'],
+            [['nama_pasar'], 'required'],
             [['nama_pasar','latitude','longitude'], 'string'],
-            
+
         ];
     }
 
@@ -83,12 +84,12 @@ class Pasar extends \yii\db\ActiveRecord
             'id' => 'Id Pasar',
             'nama_pasar' => 'Nama Pasar',
             'latitude' => 'Latitude',
-            'longitude' => 'Longitude'            
+            'longitude' => 'Longitude'
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    
+
 }

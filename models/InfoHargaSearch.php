@@ -58,17 +58,19 @@ class InfoHargaSearch extends InfoHarga
             return $dataProvider;
         }
 
+        $query->joinWith('komoditasKode');
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'tanggal' => $this->tanggal,
-            'harga_kg' => $this->harga_kg,
+            // 'harga_kg' => $this->harga_kg,
             'created' => $this->created,
             'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'komoditas_kode', $this->komoditas_kode])
-            ->andFilterWhere(['like', 'pasar', $this->pasar]);
+        $query->andFilterWhere(['like', 'komoditas.nama', $this->komoditas_kode])
+            ->andFilterWhere(['like', 'pasar', $this->pasar])
+            ->andFilterWhere(['like', 'harga_kg', $this->harga_kg]);
 
         return $dataProvider;
     }

@@ -67,7 +67,7 @@ class LapakSearch extends Lapak
             'user_id' => $this->user_id,
         ]);
 
-        $query->andFilterWhere(['like', 'kode', $this->kode])
+        $query->andFilterWhere(['like', 'lapak.kode', $this->kode])
             ->andFilterWhere(['like', 'penanggung_jawab', $this->penanggung_jawab])
             ->andFilterWhere(['like', 'alamat', $this->alamat])
             ->andFilterWhere(['like', 'lokasi.nama', $this->lokasi_kode])

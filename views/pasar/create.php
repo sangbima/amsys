@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pasar */
 
-$this->title = 'Create Pasar';
-$this->params['breadcrumbs'][] = ['label' => 'Pasars', 'url' => ['index']];
+$this->title = 'Tambah Pasar';
+$this->params['breadcrumbs'][] = ['label' => 'Pasar', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pasar-create">

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use kartik\grid\GridView;
+use hscstudio\mimin\components\Mimin;
 
 
 $this->title = 'Data Formulir Antar Hasil Panen';
@@ -38,7 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
               'est_bobot_panen',
               [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{print-pdf}',
+                'template' => Mimin::fitlerActionColumn([
+                    'print-pdf'
+                ], $this->context->route),
                 'buttons' => [
                   'print-pdf' => function($url, $model){
                     return Html::a('<span class="glyphicon glyphicon-print"></span>', $url);

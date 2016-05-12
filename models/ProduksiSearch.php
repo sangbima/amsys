@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Produksi;
+use hscstudio\mimin\components\Mimin;
 
 /**
  * ProduksiSearch represents the model behind the search form about `app\models\Produksi`.
@@ -42,13 +43,11 @@ class ProduksiSearch extends Produksi
      */
     public function search($params)
     {
-        if(Yii::$app->user->id == 1) {
+        if(Yii::$app->user->can('Administrator')) {
           $query = Produksi::find();
         } else {
           $query = Produksi::find()->where(['produksi.user_id' => Yii::$app->user->id]);
         }
-
-        // $query = Produksi::find()->where(['produksi.user_id' => $userid]);
 
         // add conditions that should always apply here
 

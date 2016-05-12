@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use kartik\grid\GridView;
+use hscstudio\mimin\components\Mimin;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ArmadaSearch */
@@ -18,7 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?php echo Html::a('<i class="fa fa-plus"></i> Armada', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php
+        if((Mimin::checkRoute($this->context->id.'/create'))) {
+          echo Html::a('<i class="fa fa-plus"></i> Armada', ['create'], ['class' => 'btn btn-success']);
+        }
+        ?>
         <?php //Html::button('<i class="fa fa-plus"></i> Acuan Harga', ['value' => Url::to(['armada/create'], true),'class' => 'btn btn-success', 'id' => 'modalButton']) ?>
     </p>
     <?php
@@ -51,7 +56,12 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'updated',
             // 'user_id',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+              'class' => 'yii\grid\ActionColumn',
+              'template' => Mimin::filterActionColumn([
+                'view', 'update', 'delete'
+              ], $this->context->route)
+            ],
         ],
     ]); ?>
 </div>

@@ -46,5 +46,6 @@ return array(
     'chillerlan\\QRCode\\' => array($vendorDir . '/chillerlan/php-qrcode/src'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
     'c006\\utility\\migration\\' => array($vendorDir . '/c006/yii2-migration-utility'),
+    'bupy7\\cropbox\\' => array($vendorDir . '/bupy7/yii2-widget-cropbox'),
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
 );

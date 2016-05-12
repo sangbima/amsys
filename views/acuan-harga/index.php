@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use kartik\grid\GridView;
+use hscstudio\mimin\components\Mimin;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\AcuanHargaSearch */
@@ -20,7 +21,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php //echo Html::a('<i class="fa fa-plus"></i> Acuan Harga', ['create'], ['class' => 'btn btn-success']) ?>
-        <?=Html::button('<i class="fa fa-plus"></i> Acuan Harga', ['value' => Url::to(['acuan-harga/create'], true),'class' => 'btn btn-success', 'id' => 'modalButton']) ?>
+        <?php
+          if((Mimin::checkRoute($this->context->id.'/create'))) {
+            echo Html::button('<i class="fa fa-plus"></i> Acuan Harga', ['value' => Url::to(['acuan-harga/create'], true),'class' => 'btn btn-success', 'id' => 'modalButton']);
+          }
+        ?>
     </p>
     <?php
       Modal::begin([
@@ -56,7 +61,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
               'class' => 'yii\grid\ActionColumn',
               'contentOptions' => ['style' => 'width: 10%'],
-              'template' => '{view} {update} {delete}',
+              'template' => Mimin::filterActionColumn([
+                'view', 'update', 'delete'
+              ], $this->context->route),
               'buttons' => [
                 'view'=>function ($url, $model) {
                   return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>$url, 'class' => 'btn btn-default btn-xs btnViewModal']);

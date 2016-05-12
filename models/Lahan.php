@@ -33,7 +33,7 @@ class Lahan extends \yii\db\ActiveRecord
 {
     const STATUS_AKTIF = 'aktif';
     const STATUS_DIHAPUS = 'dihapus';
-    const STATUS_PENDING_DIHAPUS = 'pending_dihapus';
+    const STATUS_PENDING_HAPUS = 'pending_hapus';
 
     public $provinsi;
     public $kotakab;
@@ -158,7 +158,7 @@ class Lahan extends \yii\db\ActiveRecord
         return [
           self::STATUS_AKTIF => 'Aktif',
           self::STATUS_DIHAPUS => 'Dihapus',
-          self::STATUS_PENDING_DIHAPUS => 'Pending Dihapus',
+          self::STATUS_PENDING_HAPUS => 'Pending Dihapus',
         ];
     }
 

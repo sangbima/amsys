@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use kartik\widgets\ActiveForm;
+use kartik\widgets\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
@@ -31,8 +33,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'nama',
             'email:email',
-            'status',
+            [
+              'attribute' => 'status',
+              'format' => 'raw',
+              'value' => $model->getStatusLabel($model->status)
+            ],
         ],
     ]) ?>
+    <?php $form = ActiveForm::begin([]);?>
+    <?php
+      echo $form->field($authAssignment, 'item_name')->widget(Select2::classname(), [
+        'data' => $authItems,
+        'options' => [
+          'placeholder' => 'Pilih Group ...',
+        ],
+        'pluginOptions' => [
+          'allowClear' => true,
+          'multiple' => true,
+        ],
+      ])->label('Group'); ?>
 
+    <div class="from-group">
+      <?= Html::submitButton('<i class="fa fa-edit"></i> Update', ['class' => $authAssignment->isNewRecord ? 'btn btn-success' : 'btn btn-primary'
+          //'data-confirm' => "Apakah anda yakin akan menyimpan data ini?",
+      ]) ?>
+    </div>
+    <?php ActiveForm::end();?>
 </div>

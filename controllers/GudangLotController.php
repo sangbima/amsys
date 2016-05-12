@@ -121,4 +121,25 @@ class GudangLotController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionGudanglotList($q = null, $id = null)
+    {
+      // $q='Ace';
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      $out = ['results' => ['id' => '', 'text' => '']];
+      if (!is_null($q)) {
+          $query = new \yii\db\Query;
+          $query->select('id AS id, kode AS text')
+              ->from('gudang_lot')
+              ->where(['like', 'kode', $q])
+              ->limit(20);
+          $command = $query->createCommand();
+          $data = $command->queryAll();
+          $out['results'] = array_values($data);
+      }
+      elseif ($id > 0) {
+          $out['results'] = ['id' => $id, 'text' => GudangLot::find($id)->kode];
+      }
+      return $out;
+    }
 }

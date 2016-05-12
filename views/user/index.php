@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use hscstudio\mimin\components\Mimin;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
@@ -17,7 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('<i class="fa fa-plus"></i> User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php
+        if ((Mimin::checkRoute($this->context->id.'/create'))){
+          echo Html::a('<i class="fa fa-plus"></i> User', ['create'], ['class' => 'btn btn-success']);
+        }
+        ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -29,26 +34,39 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'nama',
             'email:email',
-            // 'status',
-            // [
-            //   'attribute'=>'status',
-            //   'filter'=>array("10"=>"Active","0"=>"Inactive"),
-            //   'headerOptions'=>['width'=>'100'],
-            //   'content'=>function($d){
-            //       return $d->getStatusLabel($d->status);
-            //   }
-            // ],
-            // 'auth_key',
-            // 'password_hash',
-            // 'password_reset_token',
-            //
+            [
+              'attribute' => 'roles',
+              'format' => 'raw',
+              'value' => function ($data) {
+                $roles = [];
+                foreach ($data->roles as $role) {
+                  $roles[] = $role->item_name;
+                }
+                return Html::a(implode(',', $roles), ['view', 'id' => $data->id]);
+              }
+            ],
+            [
+              'attribute' => 'status',
+              'filter'=>array("10"=>"Active","0"=>"Banned"),
+              'format' => 'raw',
+              'options' => [
+                'width' => '100px',
+              ],
+              'value' => function ($data) {
+                return $data->getStatusLabel($data->status);
+              }
+            ],
+            [
+              'attribute' => 'created_at',
+              'format' => ['date', 'php:d M Y H:i:s'],
+            ],
 
-            // 'created',
-            // 'updated',
-            // 'user_id',
-            // 'token',
-
-            // ['class' => 'yii\grid\ActionColumn'],
+            [
+              'class' => 'yii\grid\ActionColumn',
+              'template' => Mimin::filterActionColumn([
+                'view', 'update', 'delete'
+              ], $this->context->route)
+            ],
         ],
     ]); ?>
 </div>
