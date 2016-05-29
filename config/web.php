@@ -55,6 +55,7 @@ $config = [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
+                      'pasar' => 'pasar',
                       'websvc8000' => 'websvc8000',
                       'websvc8010' => 'websvc8010',
                       'websvc8020' => 'websvc8020',
@@ -93,6 +94,13 @@ $config = [
       'allowActions' => [
         'site/*',
         'debug/*',
+        'auth8010/*',
+        'websvc8000/*',
+        'websvc8010/*',
+        'websvc8020/*',
+        'websvc8030/*',
+        'websvc8040/*',
+        'v1/*',
         'mimin/*'   // only in dev mode
       ],
     ],
@@ -105,7 +113,10 @@ $config = [
         ],
         'mimin' => [
           'class' => '\hscstudio\mimin\module',
-        ]
+        ],
+        'v1' => [
+            'class' => 'app\modules\v1\Rest',
+        ],
     ],
     'params' => $params,
 ];
